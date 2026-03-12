@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REP⚡EY — Your AI Health Agent</title>
+<meta name="description" content="Repzey is the AI-powered fitness companion that thinks, adapts, and evolves with you. Coming soon.">
+<meta name="theme-color" content="#030306">
+<meta property="og:title" content="REP⚡EY — Your AI Health Agent">
+<meta property="og:description" content="The fitness app that thinks. AI coach personas, streak psychology, and a time machine for your body.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --void: #030306;
+  --bg: #06060a;
+  --surface: #0e0e14;
+  --card: #131319;
+  --raised: #1a1a24;
+  --border: #1e1e2e;
+  --mint: #00FFD4;
+  --mint-dim: #00B89C;
+  --cyan: #00d4ff;
+  --violet: #a78bfa;
+  --amber: #ffbe0b;
+  --pink: #ff6b9d;
+  --red: #ff4d6a;
+  --green: #34d399;
+  --text: #f0f2f5;
+  --sub: #8a8fa8;
+  --dim: #555570;
+  --deep: #333348;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── NOISE TEXTURE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px;
+}
+
+/* ─── ANIMATED GRADIENT BACKGROUND ─── */
+.bg-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-gradient .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.12;
+  animation: orbFloat 20s ease-in-out infinite;
+}
+
+.bg-gradient .orb-1 {
+  width: 600px; height: 600px;
+  background: var(--mint);
+  top: -200px; left: -100px;
+  animation-delay: 0s;
+}
+
+.bg-gradient .orb-2 {
+  width: 500px; height: 500px;
+  background: var(--violet);
+  bottom: -150px; right: -100px;
+  animation-delay: -7s;
+}
+
+.bg-gradient .orb-3 {
+  width: 400px; height: 400px;
+  background: var(--cyan);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -14s;
+  opacity: 0.06;
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(60px, -40px) scale(1.1); }
+  50% { transform: translate(-30px, 60px) scale(0.95); }
+  75% { transform: translate(40px, 30px) scale(1.05); }
+}
+
+/* ─── GRID LINES (subtle) ─── */
+.grid-lines {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,255,212,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,212,0.015) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 70%);
+}
+
+/* ─── MAIN WRAPPER ─── */
+main {
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── HERO SECTION ─── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+  position: relative;
+}
+
+/* DNA Helix animation */
+.helix-container {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 32px;
+  animation: fadeSlideUp 1s ease-out 0.2s both;
+}
+
+.helix-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  border-top-color: var(--mint);
+  border-right-color: var(--cyan);
+  border-radius: 50%;
+  animation: helixSpin 3s linear infinite;
+}
+
+.helix-ring:nth-child(2) {
+  inset: 6px;
+  border-top-color: var(--violet);
+  border-right-color: var(--mint);
+  animation-direction: reverse;
+  animation-duration: 2.5s;
+}
+
+.helix-ring:nth-child(3) {
+  inset: 12px;
+  border-top-color: var(--cyan);
+  border-right-color: var(--violet);
+  animation-duration: 4s;
+}
+
+.helix-core {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 12px; height: 12px;
+  background: var(--mint);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px var(--mint), 0 0 40px rgba(0,255,212,0.3);
+  animation: corePulse 2s ease-in-out infinite;
+}
+
+@keyframes helixSpin { to { transform: rotate(360deg); } }
+@keyframes corePulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.7; }
+}
+
+.overline {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--mint);
+  margin-bottom: 20px;
+  animation: fadeSlideUp 1s ease-out 0.4s both;
+}
+
+.hero h1 {
+  font-size: clamp(40px, 8vw, 80px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  margin-bottom: 8px;
+  animation: fadeSlideUp 1s ease-out 0.6s both;
+}
+
+.hero h1 .zap {
+  color: var(--mint);
+  text-shadow: 0 0 30px rgba(0,255,212,0.4);
+  display: inline-block;
+  animation: zapPulse 3s ease-in-out infinite;
+}
+
+@keyframes zapPulse {
+  0%, 100% { text-shadow: 0 0 30px rgba(0,255,212,0.4); }
+  50% { text-shadow: 0 0 50px rgba(0,255,212,0.7), 0 0 80px rgba(0,255,212,0.3); }
+}
+
+.tagline {
+  font-size: clamp(18px, 3vw, 28px);
+  font-weight: 300;
+  color: var(--sub);
+  margin-bottom: 40px;
+  letter-spacing: -0.3px;
+  animation: fadeSlideUp 1s ease-out 0.8s both;
+}
+
+.tagline strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* CTA section */
+.hero-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: fadeSlideUp 1s ease-out 1s both;
+}
+
+.email-form {
+  display: flex;
+  gap: 0;
+  max-width: 440px;
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--card);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.email-form:focus-within {
+  border-color: var(--mint);
+  box-shadow: 0 0 30px rgba(0,255,212,0.08);
+}
+
+.email-form input {
+  flex: 1;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.email-form input::placeholder { color: var(--dim); }
+
+.email-form button {
+  padding: 16px 28px;
+  background: var(--mint);
+  color: var(--void);
+  border: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.email-form button:hover { background: #33ffe0; }
+.email-form button:active { transform: scale(0.97); }
+
+.hero-sub {
+  font-size: 12px;
+  color: var(--dim);
+  font-weight: 500;
+}
+
+.hero-sub span { color: var(--mint-dim); }
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: fadeSlideUp 1s ease-out 1.4s both;
+}
+
+.scroll-hint span {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.scroll-arrow {
+  width: 20px;
+  height: 20px;
+  border-right: 1.5px solid var(--dim);
+  border-bottom: 1.5px solid var(--dim);
+  transform: rotate(45deg);
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: 0.4; }
+  50% { transform: rotate(45deg) translate(4px, 4px); opacity: 1; }
+}
+
+/* ─── STORY SECTIONS ─── */
+.story-section {
+  padding: 120px 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.story-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-overline {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.story-section h2 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.story-section p {
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--sub);
+  line-height: 1.8;
+  max-width: 600px;
+}
+
+.story-section p strong { color: var(--text); font-weight: 600; }
+
+/* ─── FEATURE CARDS GRID ─── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 48px;
+  padding: 0 24px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.feature-card {
+  padding: 28px;
+  border-radius: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out, border-color 0.3s;
+}
+
+.feature-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.feature-card:hover {
+  border-color: var(--border-hover, var(--border));
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: var(--accent);
+  opacity: 0.6;
+}
+
+.feature-card .icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.feature-card h3 {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.feature-card p {
+  font-size: 14px;
+  color: var(--sub);
+  line-height: 1.7;
+}
+
+.feature-card .tag {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: rgba(255,255,255,0.04);
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+/* ─── COACH PREVIEW ─── */
+.coaches-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.coach-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition: border-color 0.3s, transform 0.2s;
+  cursor: default;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out, border-color 0.3s;
+}
+
+.coach-chip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.coach-chip:hover {
+  border-color: var(--coach-color);
+  transform: translateY(-2px);
+}
+
+.coach-chip .coach-icon { font-size: 24px; }
+
+.coach-chip .coach-info h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--coach-color);
+}
+
+.coach-chip .coach-info span {
+  font-size: 11px;
+  color: var(--dim);
+}
+
+/* ─── STATS BAR ─── */
+.stats-bar {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 80px 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.stat-block {
+  flex: 1;
+  min-width: 140px;
+  padding: 32px 20px;
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.stat-block:first-child { border-radius: 16px 0 0 16px; }
+.stat-block:last-child { border-radius: 0 16px 16px 0; }
+
+.stat-block.visible { opacity: 1; transform: translateY(0); }
+
+.stat-block .stat-num {
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  display: block;
+}
+
+.stat-block .stat-label {
+  font-size: 12px;
+  color: var(--dim);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* ─── BOTTOM CTA ─── */
+.bottom-cta {
+  text-align: center;
+  padding: 100px 24px 140px;
+  position: relative;
+}
+
+.bottom-cta::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(0,255,212,0.06), transparent 70%);
+  pointer-events: none;
+}
+
+.bottom-cta h2 {
+  font-size: clamp(32px, 6vw, 56px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.bottom-cta p {
+  font-size: 16px;
+  color: var(--sub);
+  margin-bottom: 40px;
+  line-height: 1.7;
+}
+
+.bottom-cta .email-form {
+  margin: 0 auto;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  text-align: center;
+  padding: 40px 24px;
+  border-top: 1px solid var(--border);
+}
+
+footer p {
+  font-size: 12px;
+  color: var(--deep);
+  font-weight: 500;
+}
+
+footer a {
+  color: var(--dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+footer a:hover { color: var(--mint); }
+
+/* ─── DIVIDER ─── */
+.divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--dim), transparent);
+  margin: 0 auto;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── MOBILE ─── */
+@media (max-width: 600px) {
+  .hero { padding: 32px 20px; }
+  .story-section { padding: 80px 20px; }
+  .email-form { flex-direction: column; border-radius: 14px; }
+  .email-form input { padding: 14px 16px; }
+  .email-form button { padding: 14px 20px; border-radius: 0 0 13px 13px; }
+  .features-grid { grid-template-columns: 1fr; padding: 0 20px; }
+  .stat-block { border-radius: 12px !important; }
+  .stats-bar { gap: 8px; }
+  .coaches-row { flex-direction: column; align-items: center; }
+}
+
+/* Success state for email form */
+.email-form.success {
+  border-color: var(--green);
+  box-shadow: 0 0 30px rgba(52,211,153,0.1);
+}
+
+.email-form.success input {
+  color: var(--green);
+}
+
+.email-form.success button {
+  background: var(--green);
+}
+</style>
+</head>
+<body>
+
+<!-- Background effects -->
+<div class="bg-gradient">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+<div class="grid-lines"></div>
+
+<main>
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="hero">
+    <div class="helix-container">
+      <div class="helix-ring"></div>
+      <div class="helix-ring"></div>
+      <div class="helix-ring"></div>
+      <div class="helix-core"></div>
+    </div>
+
+    <div class="overline">Coming Soon</div>
+
+    <h1>REP<span class="zap">⚡</span>EY</h1>
+    <p class="tagline">Your <strong>AI Health Agent</strong></p>
+
+    <div class="hero-cta">
+      <div class="email-form" id="heroForm">
+        <input type="email" placeholder="Enter your email for early access" id="heroEmail" required>
+        <button type="button" onclick="handleSubmit('heroForm', 'heroEmail')">Get Early Access</button>
+      </div>
+      <p class="hero-sub">Join <span id="waitlistCount">—</span> others on the waitlist</p>
+    </div>
+
+    <div class="scroll-hint">
+      <span>The story</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ THE PROBLEM ═══════════ -->
+  <section class="story-section" data-reveal>
+    <div class="section-overline" style="color: var(--red);">The Problem</div>
+    <h2>Every fitness app gives you a plan.<br><span style="color: var(--dim);">None of them know you.</span></h2>
+    <p>
+      You've downloaded the apps. You've tracked the calories. You've followed the AI-generated workouts.
+      And then after 3 weeks&hellip; you stopped. Not because the plan was bad.
+      Because <strong>nobody was watching. Nobody cared. Nobody adapted.</strong>
+    </p>
+    <p style="margin-top: 16px;">
+      Current fitness apps are tools. Repzey is an <strong style="color: var(--mint);">agent</strong> &mdash;
+      an AI that thinks about your body when you're not thinking about it, adjusts when you plateau,
+      celebrates when you show up, and refuses to let you disappear.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════ THE VISION ═══════════ -->
+  <section class="story-section" data-reveal>
+    <div class="section-overline" style="color: var(--mint);">The Vision</div>
+    <h2>What if your fitness app<br><span style="color: var(--mint);">thought like a coach?</span></h2>
+    <p>
+      Not a chatbot that spits out meal plans. A real agent &mdash; one that knows your 42-day streak is at risk,
+      that your bench press hasn't moved in two weeks, that you skipped dinner last night,
+      and that it's Tuesday which means it's push day.
+    </p>
+    <p style="margin-top: 16px;">
+      Repzey combines <strong>behavioral psychology</strong>, <strong>exercise science</strong>,
+      and <strong>AI that actually has a personality</strong> into something nobody has built yet.
+    </p>
+  </section>
+
+  <!-- ═══════════ FEATURES ═══════════ -->
+  <div class="features-grid">
+    <div class="feature-card" data-reveal style="--accent: var(--cyan); --border-hover: #00d4ff40;">
+      <span class="icon">⏳</span>
+      <h3>Time Machine</h3>
+      <p>See your future body. AI-powered body composition projection shows you exactly where you'll be in 12 weeks — then tracks reality against the prediction.</p>
+      <span class="tag">Visualization</span>
+    </div>
+
+    <div class="feature-card" data-reveal style="--accent: var(--amber); --border-hover: #ffbe0b40;">
+      <span class="icon">🔥</span>
+      <h3>Streak Psychology</h3>
+      <p>Duolingo-style streaks, shields, wagers, and leagues adapted for fitness. The mechanic that drives 55% daily retention — now applied to your health.</p>
+      <span class="tag">Retention</span>
+    </div>
+
+    <div class="feature-card" data-reveal style="--accent: var(--violet); --border-hover: #a78bfa40;">
+      <span class="icon">🧠</span>
+      <h3>AI Coach Personas</h3>
+      <p>Pick your coach: a drill sergeant, a sports scientist, a hype queen, or a zen master. Each speaks in character, knows your data, and pushes you differently.</p>
+      <span class="tag">Personality</span>
+    </div>
+
+    <div class="feature-card" data-reveal style="--accent: var(--pink); --border-hover: #ff6b9d40;">
+      <span class="icon">📱</span>
+      <h3>Viral Story Cards</h3>
+      <p>Auto-generated, beautifully branded weekly recaps and milestone cards that users actually want to share. Every user becomes a growth channel.</p>
+      <span class="tag">Growth</span>
+    </div>
+
+    <div class="feature-card" data-reveal style="--accent: var(--green); --border-hover: #34d39940;">
+      <span class="icon">🏋️</span>
+      <h3>873 Exercise Library</h3>
+      <p>Curated, animated exercise library — not AI-generated filler. Every workout your coach creates pulls from validated, real exercises with proper form demos.</p>
+      <span class="tag">Foundation</span>
+    </div>
+
+    <div class="feature-card" data-reveal style="--accent: var(--mint); --border-hover: #00FFD440;">
+      <span class="icon">💰</span>
+      <h3>Rep Coins Economy</h3>
+      <p>Earn coins for consistency. Spend them on streak shields, custom themes, and coach unlocks. The investment loop that makes leaving feel like losing.</p>
+      <span class="tag">Gamification</span>
+    </div>
+  </div>
+
+  <!-- ═══════════ MEET YOUR COACHES ═══════════ -->
+  <section class="story-section" data-reveal style="text-align: center; max-width: 900px;">
+    <div class="section-overline" style="color: var(--violet);">Choose Your Coach</div>
+    <h2>Four personalities.<br><span style="color: var(--violet);">One mission.</span></h2>
+    <p style="margin: 0 auto 0;">
+      Your AI coach isn't a generic chatbot. It's a character with a voice, a philosophy,
+      and full awareness of your journey. Pick the one that pushes you the way you need to be pushed.
+    </p>
+
+    <div class="coaches-row">
+      <div class="coach-chip" data-reveal style="--coach-color: var(--red); transition-delay: 0s;">
+        <span class="coach-icon">🎖️</span>
+        <div class="coach-info">
+          <h4>Sergeant Rex</h4>
+          <span>Tough love, no excuses</span>
+        </div>
+      </div>
+      <div class="coach-chip" data-reveal style="--coach-color: var(--cyan); transition-delay: 0.1s;">
+        <span class="coach-icon">🔬</span>
+        <div class="coach-info">
+          <h4>Dr. Sage</h4>
+          <span>Data-driven precision</span>
+        </div>
+      </div>
+      <div class="coach-chip" data-reveal style="--coach-color: var(--pink); transition-delay: 0.2s;">
+        <span class="coach-icon">🎉</span>
+        <div class="coach-info">
+          <h4>Hype Queen</h4>
+          <span>Relentless positivity</span>
+        </div>
+      </div>
+      <div class="coach-chip" data-reveal style="--coach-color: var(--violet); transition-delay: 0.3s;">
+        <span class="coach-icon">🧘</span>
+        <div class="coach-info">
+          <h4>Zen Master</h4>
+          <span>Mindful & sustainable</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ STATS ═══════════ -->
+  <div class="stats-bar">
+    <div class="stat-block" data-reveal style="transition-delay: 0s;">
+      <span class="stat-num" style="color: var(--mint);">873</span>
+      <span class="stat-label">Curated Exercises</span>
+    </div>
+    <div class="stat-block" data-reveal style="transition-delay: 0.1s;">
+      <span class="stat-num" style="color: var(--amber);">4</span>
+      <span class="stat-label">AI Coach Personas</span>
+    </div>
+    <div class="stat-block" data-reveal style="transition-delay: 0.2s;">
+      <span class="stat-num" style="color: var(--cyan);">12</span>
+      <span class="stat-label">Week Projections</span>
+    </div>
+    <div class="stat-block" data-reveal style="transition-delay: 0.3s;">
+      <span class="stat-num" style="color: var(--violet);">∞</span>
+      <span class="stat-label">Personalization</span>
+    </div>
+  </div>
+
+  <!-- ═══════════ BOTTOM CTA ═══════════ -->
+  <section class="bottom-cta">
+    <h2>The future of fitness<br>is <span style="color: var(--mint);">personal</span>.</h2>
+    <p>Repzey launches soon. Get on the list and be first to meet your AI coach.</p>
+    <div class="email-form" id="bottomForm" style="margin: 0 auto;">
+      <input type="email" placeholder="your@email.com" id="bottomEmail" required>
+      <button type="button" onclick="handleSubmit('bottomForm', 'bottomEmail')">Join Waitlist</button>
+    </div>
+  </section>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer>
+    <p>REP⚡EY &copy; 2026 &nbsp;&middot;&nbsp; Built with obsession &nbsp;&middot;&nbsp; <a href="/cdn-cgi/l/email-protection#90f8f5fcfcffd0e2f5e0eaf5e9bef3fffd"><span class="__cf_email__" data-cfemail="b1d9d4dddddef1c3d4c1cbd4c89fd2dedc">[email&#160;protected]</span></a></p>
+  </footer>
+
+</main>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ─── CONFIG ───
+const SUPABASE_URL = 'https://vnoihavuidncfzqmznij.supabase.co';
+const WAITLIST_ENDPOINT = SUPABASE_URL + '/functions/v1/waitlist';
+
+// ─── SCROLL REVEAL ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+
+// ─── FETCH INITIAL WAITLIST COUNT ON PAGE LOAD ───
+async function loadWaitlistCount() {
+  try {
+    const response = await fetch(WAITLIST_ENDPOINT, { method: 'GET' });
+    const data = await response.json();
+    if (data.count) {
+      const el = document.getElementById('waitlistCount');
+      animateCounterTo(el, data.count);
+    }
+  } catch (e) {
+    // Silently fail — counter stays at default
+  }
+}
+loadWaitlistCount();
+
+// ─── EMAIL FORM SUBMISSION ───
+async function handleSubmit(formId, inputId) {
+  const form = document.getElementById(formId);
+  const input = document.getElementById(inputId);
+  const btn = form.querySelector('button');
+  const email = input.value.trim();
+
+  // ─── VALIDATE ───
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    input.style.borderColor = 'var(--red)';
+    input.placeholder = 'Please enter a valid email';
+    setTimeout(() => {
+      input.style.borderColor = '';
+      input.placeholder = formId === 'heroForm' ? 'Enter your email for early access' : 'your@email.com';
+    }, 2000);
+    return;
+  }
+
+  // ─── LOADING STATE ───
+  const originalText = btn.textContent;
+  btn.textContent = 'Joining...';
+  btn.disabled = true;
+  input.disabled = true;
+
+  try {
+    // ─── SEND TO SUPABASE EDGE FUNCTION ───
+    const response = await fetch(WAITLIST_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      // ─── SUCCESS ───
+      form.classList.add('success');
+      btn.textContent = '✓ You\'re In!';
+      input.value = '';
+      input.placeholder = 'Welcome to the waitlist!';
+
+      // Update counter with count from server (offset already included)
+      if (data.count !== undefined) {
+        const counter = document.getElementById('waitlistCount');
+        animateCounterTo(counter, data.count);
+      }
+    } else {
+      // ─── SERVER ERROR ───
+      btn.textContent = originalText;
+      btn.disabled = false;
+      input.disabled = false;
+      input.value = '';
+      input.placeholder = data.error || 'Something went wrong. Try again.';
+      input.style.borderColor = 'var(--red)';
+      setTimeout(() => {
+        input.style.borderColor = '';
+        input.placeholder = formId === 'heroForm' ? 'Enter your email for early access' : 'your@email.com';
+      }, 3000);
+    }
+
+  } catch (err) {
+    // ─── NETWORK ERROR ───
+    console.error('Waitlist submission error:', err);
+    btn.textContent = originalText;
+    btn.disabled = false;
+    input.disabled = false;
+    input.value = '';
+    input.placeholder = 'Network error. Please try again.';
+    input.style.borderColor = 'var(--red)';
+    setTimeout(() => {
+      input.style.borderColor = '';
+      input.placeholder = formId === 'heroForm' ? 'Enter your email for early access' : 'your@email.com';
+    }, 3000);
+  }
+}
+
+// ─── ANIMATE COUNTER TO TARGET ───
+function animateCounterTo(el, target) {
+  const current = parseInt(el.textContent.replace(/,/g, '')) || 0;
+  if (current === target) return;
+
+  const duration = 1500;
+  const steps = 60;
+  const increment = (target - current) / steps;
+  let value = current;
+  let step = 0;
+
+  const interval = setInterval(() => {
+    step++;
+    value += increment;
+    if (step >= steps) {
+      el.textContent = target.toLocaleString();
+      clearInterval(interval);
+    } else {
+      el.textContent = Math.floor(value).toLocaleString();
+    }
+  }, duration / steps);
+}
+
+// ─── ALLOW ENTER KEY TO SUBMIT ───
+document.querySelectorAll('.email-form input').forEach(input => {
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const form = input.closest('.email-form');
+      handleSubmit(form.id, input.id);
+    }
+  });
+});
+
+// Counter starts empty — loadWaitlistCount() fetches the real number from the server
+</script>
+
+</body>
+</html>
